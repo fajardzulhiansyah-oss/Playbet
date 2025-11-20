@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayBet Arena</title>
+    <style>
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #0a1a2f, #0e3e63);
+            font-family: 'Arial', sans-serif;
+            color: white;
+            text-align: center;
+        }
+
+        header {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(6px);
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        #loginBox, #gameBox {
+            margin-top: 60px;
+            background: rgba(255,255,255,0.08);
+            padding: 25px;
+            max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        input {
+            width: 80%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            background: #1e9eff;
+            color: white;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #55b7ff;
+        }
+
+        .balance {
+            font-size: 22px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>PLAYBET ARENA</header>
+
+<div id="loginBox">
+    <h2>Masuk</h2>
+    <input id="username" placeholder="Masukkan username">
+    <br>
+    <button onclick="login()">Mulai</button>
+</div>
+
+<div id="gameBox" style="display:none;">
+    <h2>Selamat datang, <span id="playerName"></span>!</h2>
+    <div class="balance">Saldo: <span id="saldo">1000</span> koin</div>
+
+    <button onclick="bet()">Taruhan 100 koin</button>
+
+    <div class="result-box" id="result"></div>
+</div>
+
+<script>
+    function login() {
+        let user = document.getElementById("username").value.trim();
+        if (user === "") {
+            alert("Username tidak boleh kosong!");
+            return;
+        }
+        localStorage.setItem("player", user);
+        loadGame();
+    }
+
+    function loadGame() {
+        let saved = localStorage.getItem("player");
+        if (saved) {
+            document.getElementById("loginBox").style.display = "none";
+            document.getElementById("gameBox").style.display = "block";
+            document.getElementById("playerName").innerText = saved;
+        }
+    }
+
+    let saldo = 1000;
+
+    function bet() {
+        if (saldo < 100) {
+            document.getElementById("result").innerHTML = "Saldo tidak cukup!";
+            return;
+        }
+
+        saldo -= 100;
+
+        let win = Math.random() < 0.45; 
+        if (win) {
+            saldo += 200;
+            document.getElementById("result").innerHTML = "🎉 Kamu menang! +100 koin";
+        } else {
+            document.getElementById("result").innerHTML = "😢 Kamu kalah!";
+        }
+
+        document.getElementById("saldo").innerText = saldo;
+    }
+
+    loadGame();
+</script>
+
+</body>
+</html>
